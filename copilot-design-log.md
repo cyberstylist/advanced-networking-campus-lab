@@ -152,3 +152,60 @@ I also requested a separate simulated external network using 203.0.113.0/30 inst
 Copilot revised the subsequent subnet allocations to avoid overlap. The final design uses different subnet sizes based on estimated host requirements and includes room for future growth.
 
 The departmental device counts are planning assumptions and will need to be confirmed during implementation.
+
+Interaction 4: Campus Topology and OSPF Routing
+
+Prompt: Asked Copilot to design a hierarchical Campus Area Network topology for three two-story buildings using Cisco Packet Tracer. The design needed to include access and distribution switches, a central core, OSPF routing, wireless access points, a firewall, DMZ, and centralized servers. I am designing a Campus Area Network in Cisco Packet Tracer for three two-story academic buildings and an outdoor common area.
+
+Building A contains the central server room, Computer Science, Business, Administration, and IT Sandbox. Building B contains Engineering and Mathematics and Science. Building C contains Humanities and Arts and Communication.
+
+Each building must have at least one access switch in each floor's switch closet. The campus also needs a central core, building distribution or aggregation, wireless APs on both floors of every building, an outdoor AP, a firewall, a DMZ, an ISP connection, and centralized servers.
+
+My VLANs are 10–17 for departments, 20 for servers, 30 for the firewall-isolated DMZ, 40 for campus wireless, and 99 for network management. My addressing plan uses 10.50.0.0/16 with VLSM, and the current core-to-firewall transit network is 10.50.1.248/30.
+
+My professor recommends OSPF for routed campus/backbone links. Please recommend a simple hierarchical topology that uses OSPF meaningfully between the three buildings while keeping the design manageable for a student in Cisco Packet Tracer.
+
+Identify the specific Cisco Packet Tracer device types to use, the number of each device, the physical/logical connections, where inter-VLAN routing occurs, and where OSPF is configured.
+
+Recommend non-overlapping /30 transit subnets for routed building links, starting at 10.50.2.0/30, without changing the existing VLAN subnet allocations.
+
+Explain how the single campus-wide wireless SSID and VLAN 40 will operate across the three buildings. If routed building links prevent a simple shared Layer 2 wireless VLAN, explain the tradeoff and propose a Packet Tracer-compatible solution rather than assuming it works automatically.
+
+Include a simple text-based topology diagram. Explain how the core connects to the firewall, DMZ, and ISP. Clearly distinguish which links are trunks and which are routed links.
+
+Avoid unnecessary redundancy or advanced features that would make this student lab difficult to configure. Your topology is a useful starting point, but my assignment explicitly requires two application servers, a primary file server, a backup file server, a print server, NAS, UPS, IDS/IPS, KMS administrative device, and hardware firewall.
+
+  Please revise your Packet Tracer device inventory to represent every required server-room component, using labeled substitutes where exact device types are unavailable.
+
+  Also verify that Cisco 3560 switches in Packet Tracer can support a separate routed OSPF link and Layer 2 trunk between the core and each building distribution switch. Identify where VLAN 40 and VLAN 99 gateways should reside, and explain how to avoid duplicate gateways or Layer 2 loops.
+
+  Keep the existing addressing plan and three /30 OSPF transit links unchanged. Provide a concise, practical final device inventory and connection plan.
+ Copy prompt
+
+Copilot Recommendation:
+
+Copilot recommended one Cisco 3560 core switch, three Cisco 3560 building distribution switches, six Cisco 2960 floor access switches, and seven wireless access points.
+
+The design uses OSPF area 0 between the core and building distribution switches, with the following transit networks:
+
+Building A: 10.50.2.0/30
+
+Building B: 10.50.2.4/30
+
+Building C: 10.50.2.8/30
+
+Copilot also recommended separate Layer 2 trunks for VLAN 40 (campus wireless) and VLAN 99 (network management), allowing the wireless network to span all three buildings.
+
+Decision: Modified and provisionally accepted.
+
+Technical Reason:
+
+The original recommendation did not identify all required server-room equipment. I requested a revised inventory that included the application servers, file servers, print server, NAS, UPS, IDS/IPS, KMS administrative workstation, and firewall.
+
+I also asked Copilot to verify that the proposed switches could support separate routed OSPF links and Layer 2 trunks.
+
+The revised design provides a manageable hierarchical topology while supporting inter-building routing and a shared campus wireless network.
+
+VLAN 40 and VLAN 99 gateways will reside on the core switch, while department VLAN gateways will reside on their respective building distribution switches.
+
+The topology will need to be tested in Packet Tracer to confirm device compatibility and correct routing behavior.
