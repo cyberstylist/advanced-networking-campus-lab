@@ -209,3 +209,69 @@ The revised design provides a manageable hierarchical topology while supporting 
 VLAN 40 and VLAN 99 gateways will reside on the core switch, while department VLAN gateways will reside on their respective building distribution switches.
 
 The topology will need to be tested in Packet Tracer to confirm device compatibility and correct routing behavior.
+
+Interaction 5: Firewall, DMZ, NAT, and Network Security
+
+Prompt: Asked Copilot to design the campus security configuration, including firewall policies, NAT/PAT, DMZ isolation, IT Sandbox restrictions, management security, DHCP, routing, and verification tests. I am completing the security design for a three-building Campus Area Network in Cisco Packet Tracer.
+
+My topology includes one Cisco 3560 core switch, three Cisco 3560 building distribution switches, six Cisco 2960 floor access switches, seven wireless APs, an ASA 5505 firewall, a DMZ switch, centralized internal servers, and a Cisco 2911 simulated ISP router.
+
+OSPF area 0 connects the core and three building distribution switches. The core connects to the ASA firewall using 10.50.1.248/30 (core 10.50.1.249, firewall inside 10.50.1.250). The firewall outside interface uses 203.0.113.1/30 and the ISP router uses 203.0.113.2/30.
+
+Important VLANs and subnets:
+VLAN 16 Administration: 10.50.1.128/27, gateway 10.50.1.129
+VLAN 17 IT Sandbox: 10.50.1.192/27, gateway 10.50.1.193
+VLAN 20 Internal Servers: 10.50.1.224/28, gateway 10.50.1.225
+VLAN 30 DMZ: 10.50.1.240/29, firewall gateway 10.50.1.241
+VLAN 40 Campus Wireless: 10.50.0.0/25, gateway 10.50.0.1
+VLAN 99 Network Management: 10.50.1.160/27, gateway 10.50.1.161
+The remaining department VLANs are also part of the internal 10.50.0.0/16 campus network.
+
+Please create a practical security and routing plan that can be implemented and tested in Cisco Packet Tracer.
+
+Requirements:
+1. Internal clients must reach a simulated external web server using NAT/PAT.
+2. An external client must reach the public web server in the DMZ using appropriate static NAT or port forwarding.
+3. Unsolicited external connections to internal campus clients must be blocked.
+4. VLAN 17 IT Sandbox must be blocked from accessing VLAN 16 Administration, while normal permitted traffic continues to work.
+5. The DMZ must be separated from the internal server network and must not initiate unrestricted connections to internal systems.
+6. Network management access must be restricted to authorized IT devices.
+7. The core must have a default route toward the firewall, and the firewall must have return routes to campus networks. Explain whether the core should advertise a default route through OSPF.
+8. Explain where DHCP should run, how DHCP requests from routed department VLANs reach the DHCP server, and which devices need static IP addresses.
+9. Provide at least 10 specific positive and negative verification tests, including expected results.
+
+Explain where each ACL or firewall rule should be applied. Distinguish between Layer 3 switch ACLs and ASA firewall rules. Include Packet Tracer compatibility limitations and do not assume all ASA commands or advanced firewall features are supported.
+
+Do not change the previously approved VLAN addressing plan or OSPF transit subnets. Prefer a simple configuration that can be implemented by a student rather than an enterprise-level design.
+
+Copilot Recommendation:
+
+Copilot recommended using the ASA firewall for Internet access, NAT/PAT, public DMZ web-server access, and protection against unsolicited external connections.
+
+It recommended an extended ACL on Building A's VLAN 17 interface to prevent IT Sandbox devices from accessing the Administration VLAN.
+
+The design also includes:
+
+A default route from the core switch to the firewall.
+
+OSPF default-route advertisement to the building distribution switches.
+
+A static return route from the firewall to the campus network.
+
+Centralized DHCP with relay configuration on routed VLAN interfaces.
+
+Restricted network-device management access.
+
+Fifteen positive and negative verification tests.
+
+Decision: Provisionally accepted, subject to Packet Tracer testing.
+
+Technical Reason:
+
+The design separates internal campus traffic from external and DMZ traffic. The IT Sandbox ACL is applied at the Layer 3 switch because traffic between internal VLANs may not pass through the firewall.
+
+NAT/PAT allows internal clients to access external services without exposing their private IP addresses. Static port forwarding provides controlled access to the public DMZ web server.
+
+The proposed verification tests will help demonstrate that authorized traffic succeeds while prohibited connections are blocked.
+
+Packet Tracer's ASA firewall may not support every feature or command proposed by Copilot. I will verify compatibility during implementation and document any necessary modifications.
