@@ -70,3 +70,85 @@ These changes ensure the design matches the campus requirements while keeping th
 Technical Reason:
 
 I verified the calculations against the building requirements provided in the assignment. The total of 158 wired devices is correct. The suggested switches provide sufficient capacity based on an approximately even distribution of devices between floors. However, additional ports may be needed for wireless access points, uplinks, and future expansion. I will verify the switch capacity when creating the detailed network topology.
+
+Interaction 3: IPv4 Addressing and VLSM Design
+
+Prompt: Asked Copilot to create a non-overlapping IPv4 addressing plan using the campus address block 10.50.0.0/16, with appropriate VLSM subnet sizes and 25% future growth. Copilot Prompt #3: IPv4 Addressing Plan
+
+I am designing a three-building Campus Area Network in Cisco Packet Tracer using the private IPv4 block 10.50.0.0/16.
+
+My VLAN design is:
+VLAN 10 - Computer Science (Building A)
+VLAN 11 - Business (Building A)
+VLAN 12 - Engineering (Building B)
+VLAN 13 - Mathematics and Science (Building B)
+VLAN 14 - Humanities (Building C)
+VLAN 15 - Arts and Communication (Building C)
+VLAN 16 - Administration (primarily Building A)
+VLAN 17 - IT Sandbox (Building A)
+VLAN 20 - Internal Servers (Building A)
+VLAN 30 - DMZ (separate firewall zone)
+VLAN 40 - Campus Wireless (all buildings)
+VLAN 99 - Network Management
+
+The campus has 158 wired endpoints:
+Building A: 58 computers and 18 printers.
+Building B: 38 computers and 14 printers.
+Building C: 19 computers and 11 printers.
+
+The exact number of endpoints assigned to each department is not specified. Do not invent department counts as facts. Propose reasonable planning estimates, clearly label them as assumptions, and account for 25% future growth.
+
+Create a complete non-overlapping IPv4 VLSM addressing plan using different subnet sizes based on estimated host requirements.
+
+For each VLAN, include:
+1. VLAN ID and purpose
+2. Estimated current hosts and 25% growth allowance
+3. Required host bits and CIDR prefix
+4. Network address and subnet mask
+5. First and last usable IP addresses
+6. Default gateway
+7. Broadcast address
+
+Include appropriately sized routed backbone/transit links if the topology requires them. Explain the subnet calculations and verify that no networks overlap. Use the first usable IP address as the default gateway for each VLAN where appropriate.
+
+Keep the design practical for Cisco Packet Tracer and explain any assumptions that need to be confirmed before implementation. Copilot Interaction #3: Follow-up
+
+I reviewed your VLSM plan and verified that the subnet calculations and ranges do not overlap.
+
+  Please revise the design to give the IT Sandbox VLAN 17 a /27 subnet for additional flexibility. Reallocate any subsequent subnets as needed to avoid overlap.
+
+  Also, use a separate simulated external IPv4 network, such as 203.0.113.0/30, for the firewall-to-edge-router connection rather than using the campus private 10.50.0.0/16 block.
+
+  Keep the other VLAN subnet sizes unchanged unless necessary, and provide the updated complete addressing table, including subnet masks, gateways, usable ranges, and broadcast addresses.
+
+  Explain how these changes affect the network design and confirm that all subnet boundaries remain valid.
+
+Copilot Recommendation:
+
+Copilot recommended different subnet sizes based on estimated device requirements:
+
+/25 for campus wireless
+
+/26 for Computer Science and Engineering
+
+/27 for Business, Mathematics and Science, Humanities, Arts and Communication, Administration, and Network Management
+
+/28 for the original IT Sandbox and internal servers
+
+/29 for the DMZ
+
+/30 for point-to-point routed connections
+
+Decision: Modified and accepted the revised addressing plan as a working design.
+
+Technical Reason:
+
+I verified that the proposed subnets had valid network addresses, subnet masks, usable host ranges, default gateways, and broadcast addresses. I also checked that the subnet ranges did not overlap.
+
+I requested that Copilot increase the IT Sandbox from a /28 to a /27 to provide additional flexibility for future devices.
+
+I also requested a separate simulated external network using 203.0.113.0/30 instead of assigning the firewall's outside connection an address from the campus private network.
+
+Copilot revised the subsequent subnet allocations to avoid overlap. The final design uses different subnet sizes based on estimated host requirements and includes room for future growth.
+
+The departmental device counts are planning assumptions and will need to be confirmed during implementation.
